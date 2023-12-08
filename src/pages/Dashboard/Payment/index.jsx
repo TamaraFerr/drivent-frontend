@@ -10,9 +10,10 @@ export default function Payment() {
   const { userData } = useContext(UserContext);
   const [enrollment, setEnrollment] = useState(null);
   const [ingresso, setIngresso] = useState({ modalidade: '', valor: 0 });
+  const [modalidade, setModalidade] = useState('Presencial', 'Online')
   const [hospedagem, setHospedagem] = useState({ modalidade: '', valor: 0 });
   const [screen, setScreen] = useState('Buying');
-  const screenProps = { ingresso, setIngresso, hospedagem, setHospedagem, StyledTypography, StyledParagraph, Row, BoxButton, ConfirmButton };
+  const screenProps = { ingresso, setIngresso, modalidade, setModalidade,hospedagem, setHospedagem, StyledTypography, StyledParagraph, Row, BoxButton, ConfirmButton };
 
   useEffect(() => {
     async function verifyEnrollment() {
