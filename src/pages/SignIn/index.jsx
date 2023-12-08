@@ -13,6 +13,7 @@ import EventInfoContext from '../../contexts/EventInfoContext';
 import UserContext from '../../contexts/UserContext';
 
 import useSignIn from '../../hooks/api/useSignIn';
+import { getPersonalInformations } from '../../services/enrollmentApi';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -32,6 +33,10 @@ export default function SignIn() {
       const userData = await signIn(email, password);
       setUserData(userData);
       toast('Login realizado com sucesso!');
+
+      console.log(userData. token);
+      const enrollment = await getPersonalInformations(userData.token)
+      console.log(enrollment)
       navigate('/dashboard');
     } catch (err) {
       toast('Não foi possível fazer o login!');
