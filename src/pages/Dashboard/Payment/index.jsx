@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import Buying from "./Buying";
+import Payments from "./Payments";
 
 export default function Payment() {
   const { userData } = useContext(UserContext);
@@ -13,7 +14,8 @@ export default function Payment() {
   const [modalidade, setModalidade] = useState('Presencial', 'Online')
   const [hospedagem, setHospedagem] = useState({ modalidade: '', valor: 0 });
   const [screen, setScreen] = useState('Buying');
-  const screenProps = { ingresso, setIngresso, modalidade, setModalidade,hospedagem, setHospedagem, StyledTypography, StyledParagraph, Row, BoxButton, ConfirmButton };
+  const [finished, setFinished] = useState(false)
+  const screenProps = { ingresso, setIngresso, modalidade, setModalidade,hospedagem, setHospedagem, StyledTypography, StyledParagraph, Row, BoxButton, SummaryBox, ConfirmButton, setFinished, setScreen };
 
   useEffect(() => {
     async function verifyEnrollment() {
@@ -28,12 +30,14 @@ export default function Payment() {
     verifyEnrollment();
   }, []);
 
+  console.log(finished)
+
   if (!enrollment) {
     return <><StyledParagraph>Você precisa completar sua inscrição antes de prosseguir pra escolha de Hospedagem</StyledParagraph></>
-  } else if (screen === "Buying") {
+  } else if (screen === "Buying" ) {
     return <Buying {...screenProps} />
-  } else if (screen === "Payment") {
-    return <Payment {...screenProps} />
+  } else if (screen === "Payments") {
+    return <Payments {...screenProps} />
   } else {
     return (<></>)
   }
@@ -78,6 +82,31 @@ const BoxButton = styled.button`
       `
   )}
 
+  
+  p {
+  color: #454545;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18.75px;
+  margin-bottom: 3px;
+  }
+
+  span {
+  color: #898989;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 14.61px;
+  }
+`;
+
+const SummaryBox = styled.button`
+  cursor: pointer;
+  width: 290px;
+  height: 108px;
+  border-radius: 20px;
+  border: none;
+  background-color: #FFEED2;
+      
   p {
   color: #454545;
   font-weight: 400;
