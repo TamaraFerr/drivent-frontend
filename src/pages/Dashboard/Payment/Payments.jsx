@@ -1,7 +1,7 @@
 import CreditCard from "../../../components/CreditCard/CreditCad";
 import PaymentConfirmedMessage from "../../../components/PaymentConfirmed/PaymentConfirmedMessage";
 
-export default function Payments({ ingresso, setIngresso, hospedagem, setHospedagem, StyledTypography, StyledParagraph, Row, SummaryBox, ConfirmButton, paymentConfirmed, setPaymentConfirmed }) {
+export default function Payments({ ticket, accommodation, StyledTypography, StyledParagraph, Row, SummaryBox, ConfirmButton, paymentConfirmed, setPaymentConfirmed }) {
     
     function confirmPayment() {
         setPaymentConfirmed(true)
@@ -9,14 +9,14 @@ export default function Payments({ ingresso, setIngresso, hospedagem, setHospeda
     
     return (
         <>
-            <StyledTypography variant="h4">Ingresso e Pagamento</StyledTypography>
+            <StyledTypography variant="h4">Ingresso Pagamento</StyledTypography>
             <StyledParagraph>Ingresso escolhido</StyledParagraph>
                 <Row>
                     <SummaryBox>
-                    <p>{ingresso.modalidade === 'Online'
-                    ? ingresso.modalidade
-                    : `${ingresso.modalidade} + ${hospedagem.modalidade}`}</p>
-                        <span>R$ {ingresso.valor + hospedagem.valor} </span>
+                    <p>{ticket.type === 'Online'
+                    ? ticket.type
+                    : `${ticket.type} + ${accommodation.type}`}</p>
+                        <span>R$ {ticket.price + accommodation.price} </span>
                     </SummaryBox>
                 </Row>
 
