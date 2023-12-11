@@ -5,17 +5,17 @@ import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import TicketSelection from "./TicketSelection";
 import Payments from "./Payments";
+import api from '../../../services/api';
 
 export default function Payment() {
   const { userData } = useContext(UserContext);
   const [enrollment, setEnrollment] = useState(null);
   const [ticket, setTicket] = useState({ type: '', price: 0 });
-  const [type, setType] = useState('On-site', 'Online')
   const [accommodation, setAccommodation] = useState({ type: '', price: 0 });
   const [screen, setScreen] = useState('TicketSelection');
   const [finished, setFinished] = useState(false)
   const [paymentConfirmed, setPaymentConfirmed] = useState(false);
-  const screenProps = { ticket, setTicket, type, setType, accommodation, setAccommodation, StyledTypography, StyledParagraph, Row, BoxButton, SummaryBox, ConfirmButton, setFinished, setScreen, paymentConfirmed, setPaymentConfirmed };
+  const screenProps = { ticket, setTicket, accommodation, setAccommodation, StyledTypography, StyledParagraph, Row, BoxButton, SummaryBox, ConfirmButton, setFinished, setScreen, paymentConfirmed, setPaymentConfirmed };
 
   useEffect(() => {
     async function verifyEnrollment() {
@@ -33,11 +33,11 @@ export default function Payment() {
   console.log(finished)
 
   if (!enrollment) {
-    return <><StyledMissingInfo>Você precisa completar sua inscrição antes de prosseguir olha de ingresso</StyledMissingInfo></>
-  } else if (screen === "TicketSelection" ) {
-    return <TicketSelection{...screenProps} />
+    return (<StyledMissingInfo>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</StyledMissingInfo>)
+  } else if (screen === "TicketSelection") {
+    return (<TicketSelection{...screenProps} />)
   } else if (screen === "Payments") {
-    return <Payments {...screenProps} />
+    return (<Payments {...screenProps} />)
   } else {
     return (<></>)
   }
