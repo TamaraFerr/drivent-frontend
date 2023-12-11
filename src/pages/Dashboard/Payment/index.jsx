@@ -1,22 +1,21 @@
 import { useContext, useEffect, useState } from "react"
 import UserContext from "../../../contexts/UserContext";
 import { getPersonalInformations } from "../../../services/enrollmentApi";
-import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
-import Buying from "./Buying";
+import TicketSelection from "./TicketSelection";
 import Payments from "./Payments";
 
 export default function Payment() {
   const { userData } = useContext(UserContext);
   const [enrollment, setEnrollment] = useState(null);
-  const [ingresso, setIngresso] = useState({ modalidade: '', valor: 0 });
-  const [modalidade, setModalidade] = useState('Presencial', 'Online')
-  const [hospedagem, setHospedagem] = useState({ modalidade: '', valor: 0 });
-  const [screen, setScreen] = useState('Buying');
+  const [ticket, setTicket] = useState({ type: '', price: 0 });
+  const [type, setType] = useState('On-site', 'Online')
+  const [accommodation, setAccommodation] = useState({ type: '', price: 0 });
+  const [screen, setScreen] = useState('TicketSelection');
   const [finished, setFinished] = useState(false)
   const [paymentConfirmed, setPaymentConfirmed] = useState(false);
-  const screenProps = { ingresso, setIngresso, modalidade, setModalidade, hospedagem, setHospedagem, StyledTypography, StyledParagraph, Row, BoxButton, SummaryBox, ConfirmButton, setFinished, setScreen, paymentConfirmed, setPaymentConfirmed };
+  const screenProps = { ticket, setTicket, type, setType, accommodation, setAccommodation, StyledTypography, StyledParagraph, Row, BoxButton, SummaryBox, ConfirmButton, setFinished, setScreen, paymentConfirmed, setPaymentConfirmed };
 
   useEffect(() => {
     async function verifyEnrollment() {
@@ -24,7 +23,7 @@ export default function Payment() {
         const enroll = await getPersonalInformations(userData.token);
         setEnrollment(enroll);
       } catch (err) {
-        toast('Erro desconhecido.');
+        console.error('Error while verifying enrollment:', err);
       }
     }
 
@@ -34,9 +33,9 @@ export default function Payment() {
   console.log(finished)
 
   if (!enrollment) {
-    return <><StyledParagraph>Você precisa completar sua inscrição antes de prosseguir pra escolha de Hospedagem</StyledParagraph></>
-  } else if (screen === "Buying" ) {
-    return <Buying {...screenProps} />
+    return <><StyledMissingInfo>Você precisa completar sua inscrição antes de prosseguir olha de ingresso</StyledMissingInfo></>
+  } else if (screen === "TicketSelection" ) {
+    return <TicketSelection{...screenProps} />
   } else if (screen === "Payments") {
     return <Payments {...screenProps} />
   } else {
@@ -48,6 +47,20 @@ const StyledTypography = styled(Typography)`
   margin-bottom: 20px!important;
 `;
 
+const StyledMissingInfo = styled.p`
+  color: #8E8E8E;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23.44px;
+  margin: 0;
+  height: 60vh;
+  display: grid;
+  place-items: center;
+
+  b {
+    font-weight: 700;
+  }
+`;
 const StyledParagraph = styled.p`
   color: #8E8E8E;
   font-weight: 400;
@@ -83,7 +96,6 @@ const BoxButton = styled.button`
       `
   )}
 
-  
   p {
   color: #454545;
   font-weight: 400;
