@@ -2,8 +2,8 @@ export default function TicketSelection({ ticket, setTicket, accommodation, setA
     const totalPrice = (ticket.type === 'Presencial') ? (ticket.price + accommodation.price) : ticket.price;
 
     function orderFinished() {
-        setScreen("Payments")
-    };
+        setScreen("Payments");
+    }
 
     return (
         <>
