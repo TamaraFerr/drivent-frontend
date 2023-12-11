@@ -22,14 +22,6 @@ export default function Payment() {
       try {
         const enroll = await getPersonalInformations(userData.token);
         setEnrollment(enroll);
-
-        // teste:
-        const response = await api.get('/tickets/types', {
-          headers: {
-            Authorization: `Bearer ${userData.token}`,
-          },
-        })
-        console.log(response);
       } catch (err) {
         console.error('Error while verifying enrollment:', err);
       }
