@@ -1,6 +1,12 @@
 import CreditCard from "../../../components/CreditCard/CreditCad";
+import PaymentConfirmedMessage from "../../../components/PaymentConfirmed/PaymentConfirmedMessage";
 
-export default function Payments({ ingresso, setIngresso, hospedagem, setHospedagem, StyledTypography, StyledParagraph, Row, SummaryBox, ConfirmButton }) {
+export default function Payments({ ingresso, setIngresso, hospedagem, setHospedagem, StyledTypography, StyledParagraph, Row, SummaryBox, ConfirmButton, paymentConfirmed, setPaymentConfirmed }) {
+    
+    function confirmPayment() {
+        setPaymentConfirmed(true)
+        };
+    
     return (
         <>
             <StyledTypography variant="h4">Ingresso e Pagamento</StyledTypography>
@@ -15,9 +21,12 @@ export default function Payments({ ingresso, setIngresso, hospedagem, setHospeda
                 </Row>
 
             <StyledParagraph>Pagamento</StyledParagraph>
-                <Row>
-                    <CreditCard/>
-                </Row>
+            {paymentConfirmed === false ?
+            <>
+                <CreditCard />
+                <ConfirmButton onClick={() => confirmPayment()}>CONFIRMAR PAGAMENTO</ConfirmButton>
+            </>
+            : <PaymentConfirmedMessage />}
         </>
     )
 }

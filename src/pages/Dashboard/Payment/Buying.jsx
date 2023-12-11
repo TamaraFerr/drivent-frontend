@@ -1,9 +1,9 @@
 export default function Buying({ ingresso, modalidade, setModalidade, setIngresso, hospedagem, setHospedagem, StyledTypography, StyledParagraph, Row, BoxButton, ConfirmButton, setFinished, setScreen }) {
     const valorTotal = (ingresso.modalidade === 'Presencial')? (ingresso.valor + hospedagem.valor) : ingresso.valor ;
 
-    function orderFinished(){
+    function orderFinished() {
     setScreen("Payments")
-    }
+    };
 
     return (
         <>

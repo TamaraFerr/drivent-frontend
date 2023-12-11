@@ -15,7 +15,8 @@ export default function Payment() {
   const [hospedagem, setHospedagem] = useState({ modalidade: '', valor: 0 });
   const [screen, setScreen] = useState('Buying');
   const [finished, setFinished] = useState(false)
-  const screenProps = { ingresso, setIngresso, modalidade, setModalidade,hospedagem, setHospedagem, StyledTypography, StyledParagraph, Row, BoxButton, SummaryBox, ConfirmButton, setFinished, setScreen };
+  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
+  const screenProps = { ingresso, setIngresso, modalidade, setModalidade, hospedagem, setHospedagem, StyledTypography, StyledParagraph, Row, BoxButton, SummaryBox, ConfirmButton, setFinished, setScreen, paymentConfirmed, setPaymentConfirmed };
 
   useEffect(() => {
     async function verifyEnrollment() {
