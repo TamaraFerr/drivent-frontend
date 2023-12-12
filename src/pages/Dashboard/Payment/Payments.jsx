@@ -1,9 +1,19 @@
 import CreditCard from "../../../components/CreditCard/CreditCad";
 import PaymentConfirmedMessage from "../../../components/PaymentConfirmed/PaymentConfirmedMessage";
 
-export default function Payments({ ticket, accommodation, StyledTypography, StyledParagraph, Row, SummaryBox, ConfirmButton, paymentConfirmed, setPaymentConfirmed }) {
+export default function Payments({ ticket, accommodation, StyledTypography, StyledParagraph, Row, SummaryBox, ConfirmButton, paymentData, setPaymentData }) {
+    let ticketType = '';
+    let ticketPrice = 0;
+    if (paymentData.confirm) {
+        ticketType = paymentData.type;
+        ticketPrice = paymentData.price;
+    } else {
+        ticketType = (ticket.type === 'Online')? ticket.type : `${ticket.type} + ${accommodation.type}`;
+        ticketPrice = ticket.price + accommodation.price;
+    }
+
     function confirmPayment() {
-        setPaymentConfirmed(true)
+        setPaymentData({ confirm: true, type: ticketType, price: ticketPrice });
     }
 
     return (
@@ -12,20 +22,20 @@ export default function Payments({ ticket, accommodation, StyledTypography, Styl
             <StyledParagraph>Ingresso escolhido</StyledParagraph>
             <Row>
                 <SummaryBox>
-                    <p>{ticket.type === 'Online'
-                        ? ticket.type
-                        : `${ticket.type} + ${accommodation.type}`}</p>
-                    <span>R$ {ticket.price + accommodation.price} </span>
+                    <p>{ticketType}</p>
+                    <span>R$ {ticketPrice} </span>
                 </SummaryBox>
             </Row>
 
             <StyledParagraph>Pagamento</StyledParagraph>
-            {paymentConfirmed === false ?
+            {paymentData.confirm ?
+                <PaymentConfirmedMessage />
+                :
                 <>
                     <CreditCard />
                     <ConfirmButton onClick={() => confirmPayment()}>CONFIRMAR PAGAMENTO</ConfirmButton>
                 </>
-                : <PaymentConfirmedMessage />}
+            }
         </>
     )
 }

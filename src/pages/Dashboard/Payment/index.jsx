@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { getPersonalInformations } from "../../../services/enrollmentApi";
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import TicketSelection from "./TicketSelection";
 import Payments from "./Payments";
-import api from '../../../services/api';
+import useLocalStorage from "../../../hooks/useLocalStorage";
 
 export default function Payment() {
   const { userData } = useContext(UserContext);
@@ -13,9 +13,9 @@ export default function Payment() {
   const [ticket, setTicket] = useState({ type: '', price: 0 });
   const [accommodation, setAccommodation] = useState({ type: '', price: 0 });
   const [screen, setScreen] = useState('TicketSelection');
-  const [finished, setFinished] = useState(false)
-  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
-  const screenProps = { ticket, setTicket, accommodation, setAccommodation, StyledTypography, StyledParagraph, Row, BoxButton, SummaryBox, ConfirmButton, setFinished, setScreen, paymentConfirmed, setPaymentConfirmed };
+  const [paymentData, setPaymentData] = useLocalStorage(userData.user.email, { confirm: false, type: '', price: 0 });
+
+  const screenProps = { ticket, setTicket, accommodation, setAccommodation, StyledTypography, StyledParagraph, Row, BoxButton, SummaryBox, ConfirmButton, setScreen, paymentData, setPaymentData };
 
   useEffect(() => {
     async function verifyEnrollment() {
@@ -30,13 +30,11 @@ export default function Payment() {
     verifyEnrollment();
   }, []);
 
-  console.log(finished)
-
   if (!enrollment) {
     return (<StyledMissingInfo>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</StyledMissingInfo>)
-  } else if (screen === "TicketSelection") {
-    return (<TicketSelection{...screenProps} />)
-  } else if (screen === "Payments") {
+  } else if (!paymentData.confirm && screen === "TicketSelection") {
+    return (<TicketSelection {...screenProps} />)
+  } else if (paymentData.confirm || (!paymentData.confirm && screen === "Payments")) {
     return (<Payments {...screenProps} />)
   } else {
     return (<></>)
