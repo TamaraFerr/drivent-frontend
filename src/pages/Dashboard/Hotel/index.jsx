@@ -33,19 +33,21 @@ export default function Hotel() {
 
   if(!enrollment) {
     return (<StyledMissingInfo>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</StyledMissingInfo>)
-   } else if (!paymentData.confirm ) { 
+  } 
+  else if (!paymentData.confirm ) { 
     return (<StyledMissingInfo>Você precisa ter confirmado o pagamento antes de fazer a escolha de hospedagem</StyledMissingInfo>)
   }
-   else if (paymentData.confirm) { 
-      return (
+  else if (paymentData.confirm) { 
+    return (
         <>
         <HotelSelection {...screenProps} />
-        {selectedHotel && <RoomSelection {...screenProps} />}
+        {selectedHotel && <RoomSelection {...screenProps}
+         />}
         </>
-      )
-    } 
-    else {
-      return (<></>)
+    )
+  } 
+  else {
+    return (<></>)
   }
 }
   

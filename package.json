@@ -29,6 +29,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.2.0",
     "react-input-mask": "^2.0.4",
+    "react-ionicons": "^4.2.1",
     "react-loader-spinner": "^4.0.0",
     "react-router-dom": "^6.17.0",
     "react-scripts": "4.0.3",
