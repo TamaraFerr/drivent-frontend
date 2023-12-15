@@ -1,9 +1,9 @@
 export default function HotelSelection({hotel, setHotel, selectedHotel, setSelectedHotel, StyledTypography, StyledParagraph, Row, HotelBoxButton}) {
-    
+
     function hotelSelected() {
         setSelectedHotel(true);
     }
-    
+
     return  (
         <>
             <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
@@ -41,7 +41,8 @@ export default function HotelSelection({hotel, setHotel, selectedHotel, setSelec
                     <p><strong>Vagas disponíveis:</strong></p>
                     <span>56</span>
                 </HotelBoxButton>
-            </Row>
+            </Row>            
+            
         </>
     )
 
