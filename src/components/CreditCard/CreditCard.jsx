@@ -1,24 +1,16 @@
 import styled from 'styled-components';
-import React from "react";
-import { useState } from "react";
 import Card from 'react-credit-cards-2';
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 
-export default function CreditCard(){
-  const [number, setNumber] = useState('')
-  const [name, setName] = useState('')
-  const [expiry, setExpiry] = useState('')
-  const [cvv, setCvv] = useState('')
-  const [focus, setFocus] = useState('')
-
+export default function CreditCard({ number, setNumber, name, setName, expirationDate, setExpirationDate, cvv, setCvv, focus, setFocus }) {
   return (
     <CardContainer>
       <Card
-        cvv={cvv}
-        expiry={expiry}
-        focused={focus}
-        name={name}
         number={number}
+        name={name}
+        expiry={expirationDate}
+        cvv={cvv}
+        focused={focus}
       />
       <form>
         <div className="form-group mb-3 mt-4">
@@ -27,8 +19,8 @@ export default function CreditCard(){
             name="number"
             value={number}
             placeholder="Enter number"
-            onChange={e=>setNumber(e.target.value)}
-            onFocus={e=>setFocus(e.target.name)}
+            onChange={e => setNumber(e.target.value)}
+            onFocus={e => setFocus(e.target.name)}
           />
         </div>
         <div className="form-group mb-3">
@@ -37,8 +29,8 @@ export default function CreditCard(){
             name="name"
             value={name}
             placeholder="Enter name"
-            onChange={e=>setName(e.target.value)}
-            onFocus={e=>setFocus(e.target.name)}
+            onChange={e => setName(e.target.value)}
+            onFocus={e => setFocus(e.target.name)}
           />
         </div>
         <div className="row mb-3">
@@ -46,10 +38,10 @@ export default function CreditCard(){
             <input
               type="tel"
               name="expiry"
-              value={expiry}
+              value={expirationDate}
               placeholder="Enter expiry date"
-              onChange={e=>setExpiry(e.target.value)}
-              onFocus={e=>setFocus(e.target.name)}
+              onChange={e => setExpirationDate(e.target.value)}
+              onFocus={e => setFocus(e.target.name)}
             />
           </div>
           <div className="col-6">
@@ -58,8 +50,8 @@ export default function CreditCard(){
               name="cvv"
               value={cvv}
               placeholder="Enter cvv"
-              onChange={e=>setCvv(e.target.value)}
-              onFocus={e=>setFocus(e.target.name)}
+              onChange={e => setCvv(e.target.value)}
+              onFocus={e => setFocus(e.target.name)}
             />
           </div>
         </div>

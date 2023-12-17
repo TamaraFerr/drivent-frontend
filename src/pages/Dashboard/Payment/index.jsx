@@ -5,39 +5,57 @@ import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import TicketSelection from "./TicketSelection";
 import Payments from "./Payments";
-import useLocalStorage from "../../../hooks/useLocalStorage";
+import { getTicketTypes, getUserTicket } from "../../../services/ticketApi";
 
 export default function Payment() {
   const { userData } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   const [enrollment, setEnrollment] = useState(null);
-  const [ticket, setTicket] = useState({ type: '', price: 0 });
-  const [accommodation, setAccommodation] = useState({ type: '', price: 0 });
-  const [screen, setScreen] = useState('TicketSelection');
-  const [paymentData, setPaymentData] = useLocalStorage(userData.user.email, { confirm: false, type: '', price: 0 });
+  const [ticketTypes, setTicketTypes] = useState([]);
+  const [userTicket, setUserTicket] = useState(null);
 
-  const screenProps = { ticket, setTicket, accommodation, setAccommodation, StyledTypography, StyledParagraph, Row, BoxButton, SummaryBox, ConfirmButton, setScreen, paymentData, setPaymentData };
+  const screenProps = { userData, ticketTypes, userTicket, setUserTicket, StyledTypography, StyledParagraph, Row, BoxButton, SummaryBox, ConfirmButton };
 
   useEffect(() => {
-    async function verifyEnrollment() {
+    async function fetchData() {
       try {
-        const enroll = await getPersonalInformations(userData.token);
+        const enrollmentPromise = getPersonalInformations(userData.token);
+        const ticketsTypesPromise = getTicketTypes(userData.token);
+
+        const [enroll, ticket_types] = await Promise.all([enrollmentPromise, ticketsTypesPromise]);
         setEnrollment(enroll);
+        setTicketTypes(ticket_types);
+
+        let user_ticket;
+        try {
+          user_ticket = await getUserTicket(userData.token);
+          setUserTicket(user_ticket);
+        } catch (err) {
+          if (err.response && err.response.status === 404) {
+            console.log('User ticket not found!');
+          } else {
+            throw err;
+          }
+        }
+
       } catch (err) {
-        console.error('Error while verifying enrollment:', err);
+        console.error('Error while fetching data:', err);
+      } finally {
+        setLoading(false);
       }
     }
 
-    verifyEnrollment();
+    fetchData();
   }, []);
 
-  if (!enrollment) {
-    return (<StyledMissingInfo>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</StyledMissingInfo>)
-  } else if (!paymentData.confirm && screen === "TicketSelection") {
-    return (<TicketSelection {...screenProps} />)
-  } else if (paymentData.confirm || (!paymentData.confirm && screen === "Payments")) {
-    return (<Payments {...screenProps} />)
+  if (loading) {
+    return <></>;
+  } else if (!enrollment) {
+    return <StyledMissingInfo>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</StyledMissingInfo>;
+  } else if (!userTicket) {
+    return <TicketSelection {...screenProps} />;
   } else {
-    return (<></>)
+    return <Payments {...screenProps} />;
   }
 }
 
@@ -59,6 +77,7 @@ const StyledMissingInfo = styled.p`
     font-weight: 700;
   }
 `;
+
 const StyledParagraph = styled.p`
   color: #8E8E8E;
   font-weight: 400;
